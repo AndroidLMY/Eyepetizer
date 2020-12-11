@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="maindata"
+            type="com.lmy.eyepetizer.logic.viewmodle.MainViewModle" />
+    </data>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.activity.MainActivity">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@mipmap/pretty"
+                android:scaleType="fitXY"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"/>
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:id="@+id/tv_content"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{maindata.uiState.messageList.toString()}"/>
+
+            </androidx.appcompat.widget.Toolbar>
+
+
+        </FrameLayout>
+
+
+
+    </LinearLayout>
+</layout>
