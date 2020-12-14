@@ -13,9 +13,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.gyf.immersionbar.ImmersionBar
+import com.jeremyliao.liveeventbus.LiveEventBus
 import com.lmy.eyepetizer.EyepetizerApplication
 import com.lmy.eyepetizer.receiver.NetWorkChangeBroadcastReceiver
 import com.lmy.eyepetizer.ui.dialog.LoadingDialog
+import com.lmy.eyepetizer.utils.ActivityCollector
+import java.lang.ref.WeakReference
 
 /**
  * @功能:
@@ -23,8 +26,7 @@ import com.lmy.eyepetizer.ui.dialog.LoadingDialog
  * @User Lmy
  * @Compony JinAnChang
  */
-abstract class BaseActivity<VM : BaseViewModel>(isDataBinding: Boolean = true) :
-    AppCompatActivity() {
+abstract class BaseActivity<VM : BaseViewModel>(isDataBinding: Boolean = true) : AppCompatActivity() {
     //是否要使用DataBinding
     protected open val isBinding = isDataBinding
     protected var mContext: Activity? = null
@@ -32,6 +34,8 @@ abstract class BaseActivity<VM : BaseViewModel>(isDataBinding: Boolean = true) :
     protected lateinit var binding: ViewDataBinding
     protected var isFirstRequest: Boolean = true
     var broadcastReceiver: NetWorkChangeBroadcastReceiver? = null
+    /** 当前Activity的弱引用，防止内存泄露  */
+    private var activityWR: WeakReference<Activity>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initDataBinding()
@@ -44,6 +48,8 @@ abstract class BaseActivity<VM : BaseViewModel>(isDataBinding: Boolean = true) :
         if (isFirstRequest) {
             initData()
         }
+        activityWR = WeakReference(mContext!!)
+        ActivityCollector.pushTask(activityWR)
     }
 
 
@@ -126,6 +132,7 @@ abstract class BaseActivity<VM : BaseViewModel>(isDataBinding: Boolean = true) :
             unregisterReceiver(broadcastReceiver)
         }
         mContext = null
+        ActivityCollector.removeTask(activityWR)
     }
 
     private var loadingDialog: LoadingDialog? = null

@@ -3,6 +3,7 @@ package com.lmy.eyepetizer.utils
 import android.content.Intent
 import android.util.Log
 import android.view.Gravity
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -70,6 +71,18 @@ inline fun <reified T> ktstartActivity(block: Intent.() -> Unit) {
     EyepetizerApplication.context.startActivity(intent)
 }
 
+
+/**
+ * 批量设置控件点击事件。
+ *
+ * @param v 点击的控件
+ * @param block 处理点击事件回调代码块
+ */
+fun ktsetOnClickListener(vararg v: View?, block: View.() -> Unit) {
+    val listener = View.OnClickListener { it.block() }
+    v.forEach { it?.setOnClickListener(listener) }
+}
+
 /**
  *初始化ViewModel的封装
  */
@@ -87,33 +100,33 @@ inline fun <reified T : ViewModel> initViewModel(
 
 
 /****************************************Log打印得扩展函数****************************************************/
-fun Any.logd() {
+fun Any.logd(tag: String = LogUtils.TGA) {
     if (LogUtils.isPrintLog) {
-        Log.d(LogUtils.TGA, "$this")
+        Log.d(tag, "$this")
     }
 }
 
-fun Any.loge() {
+fun Any.loge(tag: String = LogUtils.TGA) {
     if (LogUtils.isPrintLog) {
-        Log.e(LogUtils.TGA, "$this")
+        Log.e(tag, "$this")
     }
 }
 
-fun Any.logi() {
+fun Any.logi(tag: String = LogUtils.TGA) {
     if (LogUtils.isPrintLog) {
-        Log.i(LogUtils.TGA, "$this")
+        Log.i(tag, "$this")
     }
 }
 
-fun Any.logv() {
+fun Any.logv(tag: String = LogUtils.TGA) {
     if (LogUtils.isPrintLog) {
-        Log.v(LogUtils.TGA, "$this")
+        Log.v(tag, "$this")
     }
 }
 
-fun Any.logw() {
+fun Any.logw(tag: String = LogUtils.TGA) {
     if (LogUtils.isPrintLog) {
-        Log.w(LogUtils.TGA, "$this")
+        Log.w(tag, "$this")
     }
 }
 
